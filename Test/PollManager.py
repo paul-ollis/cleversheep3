@@ -10,15 +10,6 @@ import six
 
 import weakref
 
-try:
-    from cleversheep3.Test import cs_asyncio_tornado
-except ImportError:
-    pass
-try:
-    from cleversheep3.Test import cs_asyncio_twisted
-except ImportError:
-    pass
-
 from cleversheep3.Test import cs_asyncio
 from cleversheep3.App import Config
 
@@ -47,22 +38,8 @@ class PollManager:
             If supplied then this is typically a class that provides
             the underlying implementation. By default this is cleversheep3's
             built-in implementation, `cs_asyncio.PollManagerImpl`.
-
-            To use the Tornado ioloop, pass in either the string "tornado"
-            or the `cs_asyncio_tornado.PollManagerImpl`.
-
         """
-        if impl is None:
-            impl = options.reactor
-
-        if impl == "cs":
-            impl = cs_asyncio.PollManagerImpl
-        elif impl == "tornado":
-            impl = cs_asyncio_tornado.PollManagerImpl
-        elif impl == "twisted":
-            impl = cs_asyncio_twisted.PollManagerImpl
-        if impl is None:
-            impl = default_impl
+        impl = cs_asyncio.PollManagerImpl
         self.impl = impl(CallbackRef)
 
     def __getattr__(self, name):
