@@ -438,6 +438,8 @@ def collectFromNamespace(collection, instance, info, parent):
     for name, value in suiteEntries:
         try:
             inst = value()
+        except Unsupported:
+            continue
         except TypeError:
             raise
         uid = getSig(inst, hints=Hints(klass=value))
