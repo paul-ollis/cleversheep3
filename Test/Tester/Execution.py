@@ -218,6 +218,7 @@ def getArgs():
 #   code has nothing else to do at all.
 _testRunEndCallbacks = []
 _testExitCallbacks = []
+_testPrepareCallbacks = []
 
 
 def add_testRunEndCallback(func):
@@ -251,6 +252,22 @@ def add_test_exit_callback(func):
     """
     if func not in _testExitCallbacks:
         _testExitCallbacks.append(func)
+
+
+def add_test_prepare_callback(func):
+    """Register a function to be invoked just before entering the test
+    framework.
+
+    More than one function can be registered. The function is called with no
+    arguments. You can register multiple functions, in which case they are
+    invoked in the order they were registered.
+
+    :Param func:
+        The function to be invoked once the test run has ended.
+
+    """
+    if func not in _testPrepareCallbacks:
+        _testPrepareCallbacks.append(func)
 
 
 def currentTestHasFailed():
@@ -424,6 +441,9 @@ class CSGeneral(Coordinator.Provider, General):
 
         logger.start()
         exitCode = manager.run()
+
+        for func in _testPrepareCallbacks:
+            func()
 
         # Perform one-time tidy up.
         for func in _testExitCallbacks:

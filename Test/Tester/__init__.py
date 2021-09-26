@@ -266,6 +266,7 @@ registerOnTestEnd = public(Execution.add_testRunEndCallback)
 
 # Preferred names start here.
 addExitCallback = public(Execution.add_test_exit_callback)
+addPrepareCallback = public(Execution.add_test_prepare_callback)
 
 class TestMarker:
     """A decorator maker, used to mark test functions.
