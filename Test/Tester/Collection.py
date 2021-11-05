@@ -507,10 +507,6 @@ def _getSource(obj, hints=None):
     src = None
     try:
         src = inspect.getsourcefile(obj)
-        if src is None:
-            # TODO: Really wierd stuff! Replace the next line with 'pass' and
-            # on my PC this function returns ``None`` for some cases.
-            print(">>>", src.__code__)
         return src
     except Exception as exc:
         pass
